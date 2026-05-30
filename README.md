@@ -6,22 +6,15 @@ This repository accompanies the manuscript *"A fully heterogeneous compute-in-me
 
 ## Repository contents
 
-Upon publication, this repository will host:
+This repository contains:
 
-- **Affinity-aware mapping framework**, including:
-  - Logits-deviation profiling (KLD-based accuracy-sensitivity proxy)
-  - EDP profiling (cycle-accurate energy–delay product)
-  - Layer affinity ranking
-- **Experimental scripts** for the Faster R-CNN object-detection demonstration
-- **Experimental scripts** for the PrivateLoRA cloud-edge collaborative LLM demonstration
-
-## Status
-
-The complete source code will be released upon publication of the manuscript. For early access during the peer-review process, please contact the corresponding authors.
+- The affinity-aware mapping framework
+- Supporting code for the Faster R-CNN object-detection workload
+- Supporting code for the PrivateLoRA cloud-edge collaborative LLM workload
 
 ## Citation
 
-A citation entry will be added here once the manuscript is published.
+Citation information will be added here upon publication.
 
 ## Contact
 
