@@ -9,7 +9,16 @@ from __future__ import annotations
 
 
 def profile_boolq_choice_token_kld(*args, **kwargs) -> dict[str, float]:
-    """Return per-PLM BoolQ KLD for single-layer ACIM substitution."""
+    """Return per-PLM BoolQ KLD for single-layer ACIM substitution.
 
-    raise NotImplementedError("To be released in the revised manuscript version")
+    Requires a user-provided PrivateLoRA-adapted Llama-2 checkpoint and the BoolQ
+    evaluation set, which are not distributed here.  Compute the divergence with
+    ``hera.affinity.profiling.compute_kld_from_logits`` over the {Yes, No}
+    choice-token logits and merge with the EDP profile.
+    """
+
+    raise NotImplementedError(
+        "Needs a user-supplied PrivateLoRA checkpoint and BoolQ data; "
+        "use compute_kld_from_logits on your own choice-token logits."
+    )
 

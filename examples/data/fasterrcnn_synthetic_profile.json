@@ -1,0 +1,16 @@
+[
+  {"name": "extractor.0.0", "short_name": "E0_0", "kld": 0.030, "edp_acim": 2.0, "edp_dcnm": 1.0},
+  {"name": "extractor.0.2", "short_name": "E0_2", "kld": 0.010, "edp_acim": 1.0, "edp_dcnm": 3.0},
+  {"name": "extractor.1.1", "short_name": "E1_1", "kld": 0.012, "edp_acim": 1.0, "edp_dcnm": 2.9},
+  {"name": "extractor.1.3", "short_name": "E1_3", "kld": 0.014, "edp_acim": 1.0, "edp_dcnm": 2.8},
+  {"name": "extractor.2.0", "short_name": "E2_0", "kld": 0.016, "edp_acim": 1.0, "edp_dcnm": 2.7},
+  {"name": "extractor.2.2", "short_name": "E2_2", "kld": 0.018, "edp_acim": 1.0, "edp_dcnm": 2.6},
+  {"name": "extractor.2.4", "short_name": "E2_4", "kld": 0.020, "edp_acim": 1.0, "edp_dcnm": 2.5},
+  {"name": "rpn.conv1", "short_name": "RPN_C1", "kld": 0.022, "edp_acim": 1.0, "edp_dcnm": 2.4},
+  {"name": "rpn.score", "short_name": "RPN_SCORE", "kld": 0.040, "edp_acim": 2.0, "edp_dcnm": 1.0},
+  {"name": "rpn.loc", "short_name": "RPN_LOC", "kld": 0.045, "edp_acim": 2.0, "edp_dcnm": 1.0},
+  {"name": "head.classifier.0", "short_name": "ROI_FC1", "kld": 0.060, "edp_acim": 1.0, "edp_dcnm": 1.4},
+  {"name": "head.classifier.2", "short_name": "ROI_FC2", "kld": 0.070, "edp_acim": 1.0, "edp_dcnm": 1.3},
+  {"name": "head.cls_loc", "short_name": "ROI_LOC", "kld": 0.050, "edp_acim": 2.0, "edp_dcnm": 1.0},
+  {"name": "head.score", "short_name": "ROI_SCORE", "kld": 0.055, "edp_acim": 2.0, "edp_dcnm": 1.0}
+]

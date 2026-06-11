@@ -1,0 +1,76 @@
+quan:
+  # FasterRCNN 的 dataloader 不是分类模型的 (inputs, targets) 格式，
+  # 所以这里关闭 prepare_quant_model2 内部 init_batch，由构建脚本显式 calibration。
+  init_batch: false
+  init_batch_num: 0
+
+  conv:
+    int_flag: false
+    act:
+      quant_name: lsq
+      bit: 8
+      all_positive: false
+      symmetric: true
+      per_channel: false
+      th_point: min
+      th_scale: 0.8
+      noise_scale: 0
+      noise_method: add
+      noise_range: max
+      init_mode: origin
+      s_init: 2
+    weight:
+      quant_name: lsq
+      bit: 8
+      all_positive: false
+      symmetric: true
+      per_channel: false
+      th_point: min
+      th_scale: 0.8
+      noise_scale: 0
+      noise_method: add
+      noise_range: max
+      init_mode: origin
+      s_init: 2
+    act_out:
+      quant_name:
+
+  fc:
+    int_flag: false
+    act:
+      quant_name: lsq
+      bit: 8
+      all_positive: false
+      symmetric: true
+      per_channel: false
+      th_point: min
+      th_scale: 0.8
+      noise_scale: 0
+      noise_method: add
+      noise_range: max
+      init_mode: origin
+      s_init: 2
+    weight:
+      quant_name: lsq
+      bit: 8
+      all_positive: false
+      symmetric: true
+      per_channel: false
+      th_point: min
+      th_scale: 0.8
+      noise_scale: 0
+      noise_method: add
+      noise_range: max
+      init_mode: origin
+      s_init: 2
+    act_out:
+      quant_name:
+
+  bn:
+    quant_flag: false
+
+  avgpool:
+    quant_flag: false
+
+  other:
+    quant_flag: false

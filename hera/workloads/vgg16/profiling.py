@@ -31,7 +31,16 @@ def build_vgg16_layer_profiles(
 
 
 def profile_vgg16_kld_single_layer_substitution(*args, **kwargs):
-    """Run VGG16 pure-DCNM vs single-layer ACIM logits-deviation profiling."""
+    """Run VGG16 pure-DCNM vs single-layer ACIM logits-deviation profiling.
 
-    raise NotImplementedError("To be released in the revised manuscript version")
+    Requires a user-provided VGG16-CIFAR100 checkpoint and evaluation split,
+    which are not distributed here.  Compute the per-layer divergence with
+    :func:`hera.affinity.profiling.compute_kld_from_logits` and feed the result
+    into :func:`build_vgg16_layer_profiles`.
+    """
+
+    raise NotImplementedError(
+        "Needs a user-supplied VGG16-CIFAR100 checkpoint and dataset; "
+        "use compute_kld_from_logits on your own reference/substituted logits."
+    )
 

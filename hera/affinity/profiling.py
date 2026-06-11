@@ -1,9 +1,11 @@
 """Profiling hooks for HERA affinity-aware mapping.
 
-The functions here define the reviewer-facing interfaces for logits-deviation
-KLD profiling and EDP profiling.  Full workload-specific model execution will be
-released with the revised manuscript version; this initial skeleton keeps the
-contracts explicit without shipping checkpoints, datasets, or HERA-silicon code.
+The functions here define the package-level interfaces for logits-deviation
+KLD profiling and EDP profiling.  The analytical EDP profiling and the KLD
+divergence are fully implemented here; the workload-specific single-layer
+ACIM-substitution experiments are implemented in the GPU examples
+(``examples/fasterrcnn/profile_kld.py`` and
+``examples/privatelora/compute_{boolq,gsm8k}_affinity.py``).
 """
 
 from __future__ import annotations
@@ -36,12 +38,21 @@ def compute_kld_from_logits(reference_logits: np.ndarray, substituted_logits: np
 def profile_kld_single_layer_substitution(*args, **kwargs) -> dict[str, float]:
     """Run single-layer ACIM substitution and return per-layer KLD.
 
-    The expected experiment compares pure-DCNM logits against logits obtained by
-    replacing exactly one Conv2d, Linear, or PLM layer with its ACIM sample-noise
-    counterpart.
+    The experiment compares pure-DCNM logits against logits obtained by replacing
+    exactly one Conv2d, Linear, or PLM layer with its ACIM sample-noise
+    counterpart (Methods, Step 2, Accuracy Sensitivity).  Full workload-specific
+    implementations live in the GPU examples: ``examples/fasterrcnn/profile_kld.py``
+    and ``examples/privatelora/compute_{boolq,gsm8k}_affinity.py``.  This package
+    keeps only the divergence math (:func:`compute_kld_from_logits`); compute your
+    own reference / substituted logits, pass them through it, then merge with
+    :func:`merge_kld_edp_profiles`.
     """
 
-    raise NotImplementedError("To be released in the revised manuscript version")
+    raise NotImplementedError(
+        "Use examples/fasterrcnn/profile_kld.py or "
+        "examples/privatelora/compute_boolq_affinity.py / compute_gsm8k_affinity.py "
+        "for the full substitution experiment, or compute_kld_from_logits on your own logits."
+    )
 
 
 def profile_edp(

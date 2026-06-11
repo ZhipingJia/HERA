@@ -28,12 +28,15 @@ def load_layer_profiles(path: Path) -> list[LayerProfile]:
 
 def build_privatelora_mapping_report(
     profiles: list[LayerProfile],
-    hera_a_threshold: float | None = None,
-    hera_p_threshold: float | None = None,
+    hera_a_dcnm_retain: int = 16,
+    hera_p_dcnm_retain: int = 8,
 ) -> dict[str, MappingScheme]:
     """Return per-task HERA-A and HERA-P PrivateLoRA assignments.
 
-    Head LB is always assigned to DCNM regardless of objective.
+    ``dcnm_retain`` is the number of lowest-affinity PLM layers kept on DCNM
+    (Methods, Step 3, bottom-K labelling).  Head LB is always assigned to DCNM
+    regardless of objective.  The defaults reproduce the BoolQ split reported in
+    the manuscript (HERA-A: 80 PLM on ACIM / 16 on DCNM; HERA-P: 88 / 8).
     """
 
     layer_names = [layer.full_name for layer in privatelora_target_layers()]
@@ -44,7 +47,7 @@ def build_privatelora_mapping_report(
         force_dcnm_layers={head_lb_name()},
     )
     return {
-        "HERA-A": select_objective_scheme(schemes, "HERA-A", hera_a_threshold),
-        "HERA-P": select_objective_scheme(schemes, "HERA-P", hera_p_threshold),
+        "HERA-A": select_objective_scheme(schemes, "HERA-A", dcnm_retain=hera_a_dcnm_retain),
+        "HERA-P": select_objective_scheme(schemes, "HERA-P", dcnm_retain=hera_p_dcnm_retain),
     }
 

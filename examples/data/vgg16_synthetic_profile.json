@@ -1,0 +1,18 @@
+[
+  {"name": "features.0", "short_name": "C1_1", "kld": 0.02, "edp_acim": 2.0, "edp_dcnm": 1.0},
+  {"name": "features.3", "short_name": "C1_2", "kld": 0.01, "edp_acim": 1.0, "edp_dcnm": 3.0},
+  {"name": "features.7", "short_name": "C2_1", "kld": 0.012, "edp_acim": 1.0, "edp_dcnm": 2.92},
+  {"name": "features.10", "short_name": "C2_2", "kld": 0.014, "edp_acim": 1.0, "edp_dcnm": 2.84},
+  {"name": "features.14", "short_name": "C3_1", "kld": 0.016, "edp_acim": 1.0, "edp_dcnm": 2.76},
+  {"name": "features.17", "short_name": "C3_2", "kld": 0.018, "edp_acim": 1.0, "edp_dcnm": 2.68},
+  {"name": "features.20", "short_name": "C3_3", "kld": 0.02, "edp_acim": 1.0, "edp_dcnm": 2.6},
+  {"name": "features.24", "short_name": "C4_1", "kld": 0.022, "edp_acim": 1.0, "edp_dcnm": 2.52},
+  {"name": "features.27", "short_name": "C4_2", "kld": 0.024, "edp_acim": 1.0, "edp_dcnm": 2.44},
+  {"name": "features.30", "short_name": "C4_3", "kld": 0.026, "edp_acim": 1.0, "edp_dcnm": 2.36},
+  {"name": "features.34", "short_name": "C5_1", "kld": 0.028, "edp_acim": 1.0, "edp_dcnm": 2.28},
+  {"name": "features.37", "short_name": "C5_2", "kld": 0.03, "edp_acim": 1.0, "edp_dcnm": 2.2},
+  {"name": "features.40", "short_name": "C5_3", "kld": 0.032, "edp_acim": 1.0, "edp_dcnm": 2.12},
+  {"name": "classifier.0", "short_name": "FC1", "kld": 0.034, "edp_acim": 1.0, "edp_dcnm": 2.04},
+  {"name": "classifier.3", "short_name": "FC2", "kld": 0.036, "edp_acim": 1.0, "edp_dcnm": 1.96},
+  {"name": "classifier.6", "short_name": "FC3", "kld": 0.038, "edp_acim": 1.0, "edp_dcnm": 1.88}
+]

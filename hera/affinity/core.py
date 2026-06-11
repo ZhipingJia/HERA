@@ -140,13 +140,27 @@ def build_scheme_family(
 def select_objective_scheme(
     schemes: list[MappingScheme],
     objective: str,
+    dcnm_retain: int | None = None,
     threshold: float | None = None,
 ) -> MappingScheme:
     """Select HERA-A or HERA-P from a ranked scheme family.
 
-    The threshold is intentionally abstract in this skeleton.  In the manuscript
-    experiments it is supplied by workload-specific validation criteria rather
-    than hard-coded here.
+    ``schemes`` is the progressive top-k family from :func:`build_scheme_family`,
+    where ``schemes[k]`` maps the top-k affinity-ranked layers to ACIM and keeps
+    the rest on DCNM.  Both HERA objectives correspond to a cut point on this
+    ranking; following the Methods, the cut is expressed as the number of
+    lowest-affinity (bottom-K) qualified layers that are *kept on DCNM*:
+
+    * ``dcnm_retain=0`` maps every affinity-qualified layer to ACIM (the
+      performance-oriented endpoint, HERA-P default).
+    * ``dcnm_retain=R`` keeps the ``R`` lowest-affinity qualified layers on DCNM,
+      preserving precision on the layers most sensitive to analogue noise
+      (accuracy-oriented, HERA-A default ``R=1``).
+
+    The real cut points in the manuscript come from workload-specific validation
+    accuracy budgets; callers reproduce them by passing explicit ``dcnm_retain``
+    values (see the example scripts).  ``threshold`` is retained as a legacy
+    fractional alias (fraction of the ranked layers assigned to ACIM).
     """
 
     if not schemes:
@@ -154,9 +168,21 @@ def select_objective_scheme(
     objective_normalized = objective.upper()
     if objective_normalized not in {"HERA-A", "HERA-P"}:
         raise ValueError("objective must be 'HERA-A' or 'HERA-P'")
-    if threshold is None:
-        return schemes[0] if objective_normalized == "HERA-A" else schemes[-1]
 
-    index = max(0, min(len(schemes) - 1, int(round(threshold * (len(schemes) - 1)))))
-    return schemes[index]
+    last = len(schemes) - 1
+
+    if dcnm_retain is not None:
+        if dcnm_retain < 0:
+            raise ValueError("dcnm_retain must be non-negative")
+        return schemes[max(0, last - dcnm_retain)]
+
+    if threshold is not None:
+        index = max(0, min(last, int(round(threshold * last))))
+        return schemes[index]
+
+    # Non-degenerate defaults: HERA-P maps all qualified layers to ACIM, while
+    # HERA-A keeps the single lowest-affinity qualified layer on DCNM.
+    if objective_normalized == "HERA-P":
+        return schemes[last]
+    return schemes[max(0, last - 1)]
 

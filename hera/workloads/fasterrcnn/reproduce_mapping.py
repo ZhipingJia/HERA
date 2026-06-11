@@ -28,16 +28,22 @@ def load_layer_profiles(path: Path) -> list[LayerProfile]:
 
 def build_faster_rcnn_mapping_report(
     profiles: list[LayerProfile],
-    hera_a_threshold: float | None = None,
-    hera_p_threshold: float | None = None,
+    hera_a_dcnm_retain: int = 2,
+    hera_p_dcnm_retain: int = 0,
 ) -> dict[str, MappingScheme]:
-    """Return HERA-A and HERA-P assignments for Faster R-CNN."""
+    """Return HERA-A and HERA-P assignments for Faster R-CNN.
+
+    ``dcnm_retain`` is the number of lowest-affinity qualified layers kept on
+    DCNM (Methods, Step 3).  The defaults reproduce the manuscript's qualitative
+    split: HERA-A keeps the two ROI-head classifier layers on DCNM, while HERA-P
+    moves them to ACIM.
+    """
 
     layer_names = [layer.full_name for layer in faster_rcnn_target_layers()]
     rank = compute_affinity_records(profiles, require_positive_edp_diff=True)
     schemes = build_scheme_family(rank, all_layer_names=layer_names)
     return {
-        "HERA-A": select_objective_scheme(schemes, "HERA-A", hera_a_threshold),
-        "HERA-P": select_objective_scheme(schemes, "HERA-P", hera_p_threshold),
+        "HERA-A": select_objective_scheme(schemes, "HERA-A", dcnm_retain=hera_a_dcnm_retain),
+        "HERA-P": select_objective_scheme(schemes, "HERA-P", dcnm_retain=hera_p_dcnm_retain),
     }
 

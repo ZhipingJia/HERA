@@ -1,0 +1,32 @@
+# Dependencies for the GPU workloads under examples/fasterrcnn and
+# examples/privatelora. The core mapping framework (hera/ package and the
+# reproduce_mapping demos) needs only requirements.txt.
+#
+# Versions below are lower bounds; the configuration actually verified is
+# listed in the README (System Requirements).
+
+torch>=2.1
+torchvision>=0.16
+
+# PrivateLoRA (Llama-2-7b + lm-evaluation-harness fork)
+transformers>=4.31
+datasets>=2.14
+evaluate>=0.4
+accelerate>=0.24
+sentencepiece>=0.1.99
+jinja2>=3.1
+sacrebleu>=2.0
+pytablewriter>=1.0
+
+# Faster R-CNN
+scikit-image>=0.21
+Pillow>=9.0
+matplotlib>=3.7
+six>=1.16
+
+# Shared utilities
+numpy>=1.21
+tqdm>=4.60
+PyYAML>=6.0
+munch>=4.0
+fire>=0.5

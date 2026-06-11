@@ -1,0 +1,22 @@
+quan:
+  lora_mobile:
+    int_flag: false
+    act:
+      all_positive: false
+      bit: 8
+      per_channel: false
+      quant_name: lsq
+      symmetric: true
+      th_point: min
+      th_scale: 0.8
+    weight:
+      all_positive: false
+      bit: 8
+      noise_method: add
+      noise_range: max
+      noise_scale: 0
+      per_channel: false
+      quant_name: lsq
+      symmetric: true
+      th_point: min
+      th_scale: 0.8

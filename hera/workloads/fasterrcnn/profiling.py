@@ -31,7 +31,16 @@ def build_faster_rcnn_layer_profiles(
 
 
 def profile_faster_rcnn_kld_single_layer_substitution(*args, **kwargs):
-    """Profile detector logits-deviation KLD under single-layer ACIM substitution."""
+    """Profile detector logits-deviation KLD under single-layer ACIM substitution.
 
-    raise NotImplementedError("To be released in the revised manuscript version")
+    Requires a user-provided detector checkpoint and the infrared evaluation set,
+    which are not distributed here.  Compute the per-layer divergence with
+    :func:`hera.affinity.profiling.compute_kld_from_logits` and feed the result
+    into :func:`build_faster_rcnn_layer_profiles`.
+    """
+
+    raise NotImplementedError(
+        "Needs a user-supplied detector checkpoint and infrared dataset; "
+        "use compute_kld_from_logits on your own reference/substituted logits."
+    )
 

@@ -1,0 +1,1 @@
+from model.faster_rcnn_vgg16 import FasterRCNNVGG16,FasterRCNNVGG16LIGHT,FasterRCNNVGG16LIGHTV2,FasterRCNNVGG16LIGHTV3

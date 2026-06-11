@@ -31,15 +31,20 @@ def load_layer_profiles(path: Path) -> list[LayerProfile]:
 
 def build_vgg16_mapping_report(
     profiles: list[LayerProfile],
-    hera_a_threshold: float | None = None,
-    hera_p_threshold: float | None = None,
+    hera_a_dcnm_retain: int = 1,
+    hera_p_dcnm_retain: int = 0,
 ) -> dict[str, MappingScheme]:
-    """Return HERA-A and HERA-P VGG16 schemes from external profiles."""
+    """Return HERA-A and HERA-P VGG16 schemes from external profiles.
+
+    ``dcnm_retain`` is the number of lowest-affinity qualified layers kept on
+    DCNM (Methods, Step 3).  HERA-P maps every affinity-qualified layer to ACIM;
+    HERA-A keeps the lowest-affinity qualified layer on DCNM.
+    """
 
     rank = compute_affinity_records(profiles, require_positive_edp_diff=True)
     schemes = build_scheme_family(rank, all_layer_names=[profile.name for profile in profiles])
     return {
-        "HERA-A": select_objective_scheme(schemes, "HERA-A", hera_a_threshold),
-        "HERA-P": select_objective_scheme(schemes, "HERA-P", hera_p_threshold),
+        "HERA-A": select_objective_scheme(schemes, "HERA-A", dcnm_retain=hera_a_dcnm_retain),
+        "HERA-P": select_objective_scheme(schemes, "HERA-P", dcnm_retain=hera_p_dcnm_retain),
     }
 

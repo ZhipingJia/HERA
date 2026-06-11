@@ -1,0 +1,73 @@
+{
+  "version": "fasterrcnn_kld_aggregation_v1",
+  "reference_model": "DCNM_INT8_QAT",
+  "comparison_model": "single_layer_ACIM_vs_DCNM",
+  "kl_direction": "KL(DCNM || single_layer_ACIM)",
+  "acim_sample_noise": {
+    "sample_noise_mode": "sample_noise_2",
+    "noise_std": 20.0,
+    "scale_factor": 0.5,
+    "input_clamp": [
+      -800.0,
+      799.0
+    ],
+    "output_clamp": [
+      -127.0,
+      127.0
+    ],
+    "note": "Use fixed random seeds for profiling. If single-run KLD is noisy, average repeated forwards for the same layer."
+  },
+  "components": [
+    {
+      "name": "rpn_cls_kl",
+      "type": "categorical_kl",
+      "source": "rpn_scores",
+      "reduction": "mean_over_images_and_anchors"
+    },
+    {
+      "name": "rpn_loc_kl_gaussian",
+      "type": "standardized_gaussian_kl_proxy",
+      "source": "rpn_locs",
+      "formula": "0.5 * mean(((acim - dcnm) / std_dcnm)^2)"
+    },
+    {
+      "name": "roi_cls_kl",
+      "type": "categorical_kl",
+      "source": "roi_scores",
+      "proposal_policy": "use_fixed_dcnm_reference_rois",
+      "reduction": "mean_over_images_and_rois"
+    },
+    {
+      "name": "roi_loc_kl_gaussian",
+      "type": "standardized_gaussian_kl_proxy",
+      "source": "roi_cls_locs",
+      "proposal_policy": "use_fixed_dcnm_reference_rois",
+      "selection": "foreground_class_bbox_regression_only",
+      "formula": "0.5 * mean(((acim - dcnm) / std_dcnm)^2)"
+    }
+  ],
+  "component_normalization": {
+    "method": "mean_over_target_layers",
+    "formula": "norm_component_l = raw_component_l / (mean(raw_component over target layers) + eps_component)",
+    "eps_component": 1e-12
+  },
+  "total_kld": {
+    "name": "total_kld_v1",
+    "formula": "mean([norm_rpn_cls_kl, norm_rpn_loc_kl_gaussian, norm_roi_cls_kl, norm_roi_loc_kl_gaussian])"
+  },
+  "diagnostics": [
+    {
+      "name": "total_kld_cls_only",
+      "formula": "mean([norm_rpn_cls_kl, norm_roi_cls_kl])"
+    },
+    {
+      "name": "total_kld_roi_only",
+      "formula": "mean([norm_roi_cls_kl, norm_roi_loc_kl_gaussian])"
+    }
+  ],
+  "affinity": {
+    "formula": "edp_diff / (total_kld_v1 + epsilon)",
+    "edp_diff": "EDP_DCNM - EDP_ACIM",
+    "epsilon": 0.1
+  }
+}

@@ -11,12 +11,14 @@ dist/
 
 # Local experiment artifacts are intentionally excluded from the initial
 # reviewer-facing skeleton.
-checkpoints/
-data/
-logs/
-outputs/
+/checkpoints/
+/data/
+/logs/
+/outputs/
 *.pt
 *.pth
 *.ckpt
 *.safetensors
 
+# Released checkpoints are explicitly tracked.
+!examples/fasterrcnn/weights/*.pth

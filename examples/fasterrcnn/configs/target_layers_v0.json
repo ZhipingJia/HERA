@@ -1,0 +1,126 @@
+{
+  "version": "v0_full_detector_all_conv_linear",
+  "scope": "Extractor + RPN + ROI Head all Conv2d/Linear layers",
+  "model": "FasterRCNNVGG16LIGHTV3 channel32 block3",
+  "notes": [
+    "Affinity profiling must include every Conv2d/Linear layer in Extractor, RPN, and ROI Head.",
+    "ACIM means sample-noise deployment.",
+    "DCNM means ordinary quant-noise deployment with noise disabled.",
+    "The mapping algorithm may choose DCNM for layers with poor ACIM EDP or high KLD, but those layers must still appear in profiling."
+  ],
+  "layers": [
+    {
+      "index": 0,
+      "full_name": "extractor.0.0",
+      "short_name": "E0_0",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 3, 3, 3]
+    },
+    {
+      "index": 1,
+      "full_name": "extractor.0.2",
+      "short_name": "E0_2",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 2,
+      "full_name": "extractor.1.1",
+      "short_name": "E1_1",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 3,
+      "full_name": "extractor.1.3",
+      "short_name": "E1_3",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 4,
+      "full_name": "extractor.2.0",
+      "short_name": "E2_0",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 5,
+      "full_name": "extractor.2.2",
+      "short_name": "E2_2",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 6,
+      "full_name": "extractor.2.4",
+      "short_name": "E2_4",
+      "stage": "Extractor",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 7,
+      "full_name": "rpn.conv1",
+      "short_name": "RPN_C1",
+      "stage": "RPN",
+      "module_type": "Conv2d",
+      "weight_shape": [32, 32, 3, 3]
+    },
+    {
+      "index": 8,
+      "full_name": "rpn.score",
+      "short_name": "RPN_SCORE",
+      "stage": "RPN",
+      "module_type": "Conv2d",
+      "weight_shape": [18, 32, 1, 1]
+    },
+    {
+      "index": 9,
+      "full_name": "rpn.loc",
+      "short_name": "RPN_LOC",
+      "stage": "RPN",
+      "module_type": "Conv2d",
+      "weight_shape": [36, 32, 1, 1]
+    },
+    {
+      "index": 10,
+      "full_name": "head.classifier.0",
+      "short_name": "ROI_FC1",
+      "stage": "ROIHead",
+      "module_type": "Linear",
+      "weight_shape": [32, 288]
+    },
+    {
+      "index": 11,
+      "full_name": "head.classifier.2",
+      "short_name": "ROI_FC2",
+      "stage": "ROIHead",
+      "module_type": "Linear",
+      "weight_shape": [32, 32]
+    },
+    {
+      "index": 12,
+      "full_name": "head.cls_loc",
+      "short_name": "ROI_LOC",
+      "stage": "ROIHead",
+      "module_type": "Linear",
+      "weight_shape": [8, 32]
+    },
+    {
+      "index": 13,
+      "full_name": "head.score",
+      "short_name": "ROI_SCORE",
+      "stage": "ROIHead",
+      "module_type": "Linear",
+      "weight_shape": [2, 32]
+    }
+  ]
+}
+
