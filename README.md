@@ -242,10 +242,10 @@ cd examples/fasterrcnn
 python eval_voc.py --checkpoint weights/fasterrcnn_all_dcnm_int8_qat.pth     --quant-config configs/config_dcnm_int8.yaml --voc-data-dir /path/to/dataset
 
 # 2. mAP evaluation — hybrid HERA-A / HERA-P / all-ACIM (ACIM layers inject sampled noise)
-python eval_voc.py --checkpoint weights/fasterrcnn_hera_a_scheme7_noise20.pth     --effective-config configs/effective_config_hera_a_scheme7.json --voc-data-dir /path/to/dataset
+python eval_voc.py --checkpoint weights/fasterrcnn_hera_a_scheme7.pth     --effective-config configs/effective_config_hera_a_scheme7.json --voc-data-dir /path/to/dataset
 
 # 3. DCNM INT8 PTQ from the full-precision checkpoint
-python build_dcnm_baseline.py --fp-checkpoint weights/fasterrcnn_fp_map0889_epoch10.pth     --output-dir runs/dcnm_ptq --voc-data-dir /path/to/dataset
+python build_dcnm_baseline.py --fp-checkpoint weights/fasterrcnn_fp.pth     --output-dir runs/dcnm_ptq --voc-data-dir /path/to/dataset
 
 # 4. QAT / hybrid ACIM training (scheme construction is driven by --acim-layer-indices)
 python train_dcnm_int8_qat.py --source-checkpoint runs/dcnm_ptq/fasterrcnn_dcnm_int8_from_fp_best.pth     --output-root runs/qat --voc-data-dir /path/to/dataset
@@ -260,12 +260,15 @@ python build_ranked_scheme_hardware_summary.py     --affinity-ranking runs/affin
 Detection accuracies reproduced with this code on the paper's evaluation split
 (1,276 images; expected run time ≈ 10 s per evaluation on one modern GPU):
 
-| Checkpoint | mAP50 (VOC07) | Note |
-|---|---|---|
-| all-DCNM INT8 QAT | 0.8947 | deterministic, reproduces exactly |
-| HERA-A (scheme7, noise std 20) | 0.881 ± 0.002 | eval-time ACIM noise sampling |
-| HERA-P (scheme9, noise std 20) | 0.846 ± 0.002 | eval-time ACIM noise sampling |
-| all-ACIM (noise std 20) | 0.543 ± 0.002 | eval-time ACIM noise sampling |
+| Checkpoint | mAP50 (VOC07) |
+|---|---|
+| all-DCNM INT8 QAT | 0.8892 |
+| HERA-A (scheme7) | 0.8859 |
+| HERA-P (scheme9) | 0.8512 |
+| all-ACIM | 0.5428 |
+
+The all-DCNM evaluation is deterministic; the hybrid configurations sample ACIM noise
+at evaluation time, so their mAP varies slightly across seeds.
 
 ### PrivateLoRA (cloud-edge collaborative LLM)
 

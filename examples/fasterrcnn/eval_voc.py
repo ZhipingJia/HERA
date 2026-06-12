@@ -8,7 +8,7 @@ dataset, and reports mAP50 (VOC07 11-point metric).
 Example (full-precision checkpoint shipped with this repository):
 
     python eval_voc.py \
-        --checkpoint weights/fasterrcnn_fp_map0889_epoch10.pth \
+        --checkpoint weights/fasterrcnn_fp.pth \
         --voc-data-dir /path/to/infrared_voc_root \
         --device 0
 
@@ -125,7 +125,12 @@ def eval_detector(dataloader, faster_rcnn, test_num: int = 10000, show_progress:
     )
 
 
-def apply_effective_config(model: torch.nn.Module, effective_config: Path, target_layers_path: Path) -> list[dict]:
+def apply_effective_config(
+    model: torch.nn.Module,
+    effective_config: Path,
+    target_layers_path: Path,
+    noise_std_override: float | None = None,
+) -> list[dict]:
     """Rebuild the hybrid ACIM/DCNM layer assignment recorded by a QAT run.
 
     ``effective_config.json`` is written by ``train_dcnm_int8_qat.py`` and records
@@ -144,10 +149,13 @@ def apply_effective_config(model: torch.nn.Module, effective_config: Path, targe
     with open(target_layers_path) as f:
         target_layers = json.load(f)["layers"]
 
+    noise_std = float(cfg.get("sample_noise_std", 0.0))
+    if noise_std_override is not None:
+        noise_std = float(noise_std_override)
     noise_args = Namespace(
         sample_noise_mode=cfg.get("sample_noise_mode", "sample_noise_4"),
         sample_noise_mode_overrides=cfg.get("sample_noise_mode_overrides", ""),
-        sample_noise_std=float(cfg.get("sample_noise_std", 0.0)),
+        sample_noise_std=noise_std,
         sample_noise_scale=float(cfg.get("sample_noise_scale", 0.5)),
         sample_output_min=cfg.get("sample_output_min"),
         sample_output_max=cfg.get("sample_output_max"),
@@ -194,6 +202,13 @@ def main() -> int:
     parser.add_argument("--test-num", type=int, default=10000)
     parser.add_argument("--seed", type=int, default=20260502,
                         help="Random seed; ACIM layers inject sampled noise at eval time.")
+    parser.add_argument(
+        "--noise-std",
+        type=float,
+        default=None,
+        help="Override the ACIM sample-noise std from --effective-config (which records "
+             "the training-time value); use to evaluate under a different noise level.",
+    )
     args = parser.parse_args()
 
     opt.voc_data_dir = str(args.voc_data_dir)
@@ -212,7 +227,8 @@ def main() -> int:
     if quant_config is not None:
         quantize_as_dcnm(model, dataloader, quant_config)
     if args.effective_config is not None:
-        apply_effective_config(model, args.effective_config, args.target_layers)
+        apply_effective_config(model, args.effective_config, args.target_layers,
+                               noise_std_override=args.noise_std)
     load_result = load_checkpoint(model, args.checkpoint)
     print(f"checkpoint loaded: missing={list(load_result.missing_keys)} "
           f"unexpected={list(load_result.unexpected_keys)}")

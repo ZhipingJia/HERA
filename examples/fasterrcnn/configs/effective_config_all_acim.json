@@ -8,5 +8,5 @@
   "sample_output_max": 127.0,
   "sample_output_min_overrides": "",
   "sample_output_max_overrides": "",
-  "_note": "Sanitized from the QAT run's effective_config.json; only fields needed to rebuild the hybrid ACIM/DCNM layer assignment are kept."
+  "_note": "Evaluation configuration: rebuilds the all-ACIM layer assignment of this checkpoint for eval_voc.py."
 }
