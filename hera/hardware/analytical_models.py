@@ -1,17 +1,23 @@
 """Analytical models for the HERA ACIM, DCNM, and GPC tiers.
 
 This module corresponds to the Methods section on analytical modeling of the
-heterogeneous efficiency envelope.  It provides compact, parameterized formulas
-for estimating latency, energy, and EDP for a matrix-vector style layer mapped to
-ACIM or DCNM.  The defaults are deliberately illustrative placeholders; paper
-calibration constants and measured power/latency data are not distributed in
-this initial repository skeleton.
+heterogeneous efficiency envelope.  It provides the cycle-accurate per-layer
+latency / energy / EDP model used by the affinity-aware mapping framework, and
+shares its calibrated coefficients with the GPU workloads through
+:data:`hera.hardware.hera_config.DEFAULT_HERA_HARDWARE`, so the mapping is driven
+by one consistent, manuscript-aligned hardware model.
+
+The energy terms are expressed as calibrated energy coefficients (joules per unit
+of activity); the device-level electrical quantities they aggregate are not part
+of this interface.
 """
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+
+from .hera_config import DEFAULT_HERA_HARDWARE as _HW
 
 
 @dataclass(frozen=True)
@@ -60,28 +66,25 @@ class HardwareEstimate:
 class ACIMParameters:
     """Parameters for the ACIM analytical model.
 
-    Use manuscript-calibrated values through an external configuration file when
-    reproducing the paper.  The small defaults only make the API importable and
-    testable without releasing real HERA power/latency data.
+    Defaults are the calibrated HERA coefficients from
+    :data:`hera.hardware.hera_config.DEFAULT_HERA_HARDWARE`.
     """
 
-    n_group: int = 2
-    n_col: int = 2
-    max_parallel_groups: int = 2
-    t_cycle_s: float = 1.0
-    p_static_w: float = 0.0
-    p_dynamic_per_group_w: float = 1.0
+    n_col: int = _HW.acim_base_cols
+    max_parallel_groups: int = _HW.acim_max_parallel_groups
+    t_cycle_s: float = _HW.acim_latency_per_cycle_s
+    dynamic_energy_per_group_cycle_j: float = _HW.acim_dynamic_energy_per_group_cycle_j
+    static_energy_per_cycle_j: float = _HW.acim_static_energy_per_cycle_j
 
 
 @dataclass(frozen=True)
 class DCNMParameters:
     """Parameters for the DCNM analytical model."""
 
-    bit_width: int = 1
-    e_mem_per_bit_j: float = 1.0
-    e_op_j: float = 1.0
-    e_overhead_j: float = 0.0
-    throughput_eff_ops_s: float = 1.0
+    memory_energy_per_element_j: float = _HW.dcnm_memory_energy_per_element_j
+    e_op_j: float = _HW.dcnm_compute_energy_per_op_j
+    e_overhead_j: float = _HW.dcnm_fixed_overhead_j
+    throughput_eff_ops_s: float = _HW.dcnm_effective_throughput_int8_ops
 
 
 @dataclass(frozen=True)
@@ -101,7 +104,7 @@ def calculate_acim(
 
     Args:
         layer: Layer shape in the paper's R/C matrix convention.
-        params: ACIM model parameters.  Defaults are illustrative placeholders.
+        params: ACIM model parameters; defaults to the calibrated HERA model.
         row_parallel: Whether independent active rows may be scheduled in
             parallel across available ACIM groups.
 
@@ -123,8 +126,8 @@ def calculate_acim(
 
     latency_s = float(total_cycles) * params.t_cycle_s
     active_group_evaluations = float(layer.active_rows) * float(groups_per_vector)
-    dynamic_energy_j = active_group_evaluations * params.p_dynamic_per_group_w * params.t_cycle_s
-    static_energy_j = params.p_static_w * latency_s
+    dynamic_energy_j = active_group_evaluations * params.dynamic_energy_per_group_cycle_j
+    static_energy_j = float(total_cycles) * params.static_energy_per_cycle_j
     energy_j = dynamic_energy_j + static_energy_j
 
     return HardwareEstimate(
@@ -149,7 +152,7 @@ def calculate_dcnm(layer: LayerShape, params: DCNMParameters | None = None) -> H
 
     Args:
         layer: Layer shape in the paper's R/C matrix convention.
-        params: DCNM model parameters.  Defaults are illustrative placeholders.
+        params: DCNM model parameters; defaults to the calibrated HERA model.
 
     Returns:
         HardwareEstimate with tier set to ``"DCNM"``.
@@ -162,7 +165,7 @@ def calculate_dcnm(layer: LayerShape, params: DCNMParameters | None = None) -> H
         raise ValueError("DCNM effective throughput must be positive")
 
     weight_elements = float(layer.r_dim) * float(layer.c_dim)
-    memory_energy_j = weight_elements * float(params.bit_width) * params.e_mem_per_bit_j
+    memory_energy_j = weight_elements * params.memory_energy_per_element_j
     compute_energy_j = layer.flops * params.e_op_j
     energy_j = memory_energy_j + compute_energy_j + params.e_overhead_j
     latency_s = layer.flops / params.throughput_eff_ops_s
@@ -197,6 +200,7 @@ def compare_acim_dcnm(
     layer: LayerShape,
     acim_params: ACIMParameters | None = None,
     dcnm_params: DCNMParameters | None = None,
+    row_parallel: bool = True,
 ) -> dict[str, HardwareEstimate | float | str]:
     """Compare ACIM and DCNM EDP for a layer.
 
@@ -205,7 +209,7 @@ def compare_acim_dcnm(
         ``EDP_DCNM - EDP_ACIM``.  Positive values indicate that ACIM reduces EDP.
     """
 
-    acim = calculate_acim(layer, acim_params)
+    acim = calculate_acim(layer, acim_params, row_parallel=row_parallel)
     dcnm = calculate_dcnm(layer, dcnm_params)
     edp_diff = dcnm.edp - acim.edp
     return {
@@ -214,4 +218,3 @@ def compare_acim_dcnm(
         "edp_diff": edp_diff,
         "preferred_tier": "ACIM" if edp_diff > 0.0 else "DCNM",
     }
-

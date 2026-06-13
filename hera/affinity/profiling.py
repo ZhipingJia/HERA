@@ -2,10 +2,10 @@
 
 The functions here define the package-level interfaces for logits-deviation
 KLD profiling and EDP profiling.  The analytical EDP profiling and the KLD
-divergence are fully implemented here; the workload-specific single-layer
-ACIM-substitution experiments are implemented in the GPU examples
-(``examples/fasterrcnn/profile_kld.py`` and
-``examples/privatelora/compute_{boolq,gsm8k}_affinity.py``).
+divergence are fully implemented here.  The workload-specific single-layer
+ACIM-substitution experiment is an interface boundary: it needs a user-provided
+model checkpoint, an evaluation dataset, and the ACIM sample-noise model, none
+of which are distributed in this repository.
 """
 
 from __future__ import annotations
@@ -40,18 +40,16 @@ def profile_kld_single_layer_substitution(*args, **kwargs) -> dict[str, float]:
 
     The experiment compares pure-DCNM logits against logits obtained by replacing
     exactly one Conv2d, Linear, or PLM layer with its ACIM sample-noise
-    counterpart (Methods, Step 2, Accuracy Sensitivity).  Full workload-specific
-    implementations live in the GPU examples: ``examples/fasterrcnn/profile_kld.py``
-    and ``examples/privatelora/compute_{boolq,gsm8k}_affinity.py``.  This package
-    keeps only the divergence math (:func:`compute_kld_from_logits`); compute your
-    own reference / substituted logits, pass them through it, then merge with
+    counterpart (Methods, Step 2, Accuracy Sensitivity).  This package keeps only
+    the divergence math (:func:`compute_kld_from_logits`): compute your own
+    reference / substituted logits with your model and dataset, pass them through
+    it, then merge the per-layer KLD with the EDP rows via
     :func:`merge_kld_edp_profiles`.
     """
 
     raise NotImplementedError(
-        "Use examples/fasterrcnn/profile_kld.py or "
-        "examples/privatelora/compute_boolq_affinity.py / compute_gsm8k_affinity.py "
-        "for the full substitution experiment, or compute_kld_from_logits on your own logits."
+        "Single-layer ACIM substitution needs a user-supplied checkpoint, dataset, "
+        "and ACIM sample-noise model; use compute_kld_from_logits on your own logits."
     )
 
 

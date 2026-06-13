@@ -26,13 +26,12 @@ hera/
   affinity/        Affinity ranking, scheme construction, baselines (AccDrop, GA Search)
   workloads/       Layer layouts + report builders for Faster R-CNN, PrivateLoRA, VGG16
 examples/
-  fasterrcnn/      Mapping demo + full GPU workload: lightweight Faster R-CNN model,
-                   VOC mAP evaluation, DCNM INT8 PTQ/QAT, single-layer ACIM KLD profiling,
-                   EDP profiling, scheme hardware summary, released detector checkpoints
-  privatelora/     Mapping demo + full GPU workload: PrivateLoRA Llama-2-7b modeling,
+  fasterrcnn/      Mapping demo + GPU workload: lightweight Faster R-CNN model,
+                   VOC mAP evaluation, DCNM INT8 PTQ/QAT, released detector checkpoints
+  privatelora/     Mapping demo + GPU workload: PrivateLoRA Llama-2-7b modeling,
                    BoolQ/GSM8K evaluation (bundled lm-evaluation-harness fork),
-                   INT8/CGRA quantization, per-PLM KLD+EDP affinity profiling
-  vgg16/           CLI: reproduce VGG16 mapping
+                   INT8/CGRA quantization
+  vgg16/           Mapping demo for the VGG16 supporting study
   data/            Small synthetic profile JSONs used by the mapping demos
 tests/             Smoke tests (also verify the demo outputs)
 ```
@@ -40,11 +39,13 @@ tests/             Smoke tests (also verify the demo outputs)
 The repository has two tiers:
 
 1. **Mapping demos (CPU, NumPy only)** — reproduce the paper's HERA-A / HERA-P layer
-   assignments from per-layer profiles in under a second on any desktop machine.
+   assignments from per-layer profiles in under a second on any desktop machine. These
+   demonstrate the affinity-mapping logic only; the underlying workloads (object
+   detection, LLM inference, image classification) are themselves run on GPUs.
 2. **GPU workloads** (`examples/fasterrcnn`, `examples/privatelora`) — the PyTorch
-   inference, quantization, evaluation, and profiling code behind the manuscript's
-   Faster R-CNN and PrivateLoRA results, including released Faster R-CNN checkpoints
-   that reproduce the detection accuracies in Fig. 4f.
+   inference, quantization, and evaluation code behind the manuscript's Faster R-CNN and
+   PrivateLoRA results, including released Faster R-CNN checkpoints that reproduce the
+   detection accuracies in Fig. 4f.
 
 ### What is **not** included
 
@@ -225,10 +226,10 @@ The `AccDrop` and `GA Search` baselines from the Methods are available in
 ### Faster R-CNN (infrared human detection)
 
 `examples/fasterrcnn/` contains the paper's lightweight channel-32 detector
-(`FasterRCNNVGG16LIGHTV3`, 14 Conv2d/Linear target layers), the LSQ INT8 quantization
-layers, and the full affinity pipeline. Released checkpoints (each ~320 KB) live in
-`examples/fasterrcnn/weights/` — see the README there for the full list; each file is a sanitized
-`{"model": state_dict, "meta": {...}}` payload.
+(`FasterRCNNVGG16LIGHTV3`, 14 Conv2d/Linear target layers) and the LSQ INT8 quantization
+layers, with inference, VOC mAP evaluation, DCNM INT8 PTQ and QAT. Released checkpoints
+(each ~320 KB) live in `examples/fasterrcnn/weights/` — see the README there for the full
+list; each file is a sanitized `{"model": state_dict, "meta": {...}}` payload.
 
 The infrared dataset is not distributed. To evaluate, point `--voc-data-dir` at a
 VOC-style root containing `imgs/<id>.jpg`, `Anotations/All_In_One_Anot_voc/<id>.xml`
@@ -238,23 +239,17 @@ VOC-style root containing `imgs/<id>.jpg`, `Anotations/All_In_One_Anot_voc/<id>.
 ```bash
 cd examples/fasterrcnn
 
-# 1. mAP evaluation — all-DCNM INT8 reference (deterministic)
+# mAP evaluation — all-DCNM INT8 reference (deterministic)
 python eval_voc.py --checkpoint weights/fasterrcnn_all_dcnm_int8_qat.pth     --quant-config configs/config_dcnm_int8.yaml --voc-data-dir /path/to/dataset
 
-# 2. mAP evaluation — hybrid HERA-A / HERA-P / all-ACIM (ACIM layers inject sampled noise)
+# mAP evaluation — hybrid HERA-A / HERA-P / all-ACIM (ACIM layers inject sampled noise)
 python eval_voc.py --checkpoint weights/fasterrcnn_hera_a_scheme7.pth     --effective-config configs/effective_config_hera_a_scheme7.json --voc-data-dir /path/to/dataset
 
-# 3. DCNM INT8 PTQ from the full-precision checkpoint
+# DCNM INT8 PTQ from the full-precision checkpoint
 python build_dcnm_baseline.py --fp-checkpoint weights/fasterrcnn_fp.pth     --output-dir runs/dcnm_ptq --voc-data-dir /path/to/dataset
 
-# 4. QAT / hybrid ACIM training (scheme construction is driven by --acim-layer-indices)
+# DCNM / hybrid-ACIM quantization-aware training
 python train_dcnm_int8_qat.py --source-checkpoint runs/dcnm_ptq/fasterrcnn_dcnm_int8_from_fp_best.pth     --output-root runs/qat --voc-data-dir /path/to/dataset
-
-# 5. Affinity profiling: KLD -> EDP -> affinity rank -> scheme hardware summary
-python profile_kld.py --reference-checkpoint weights/fasterrcnn_all_dcnm_int8_qat.pth     --output-dir runs/kld --voc-data-dir /path/to/dataset
-python compute_edp_affinity.py --reference-checkpoint weights/fasterrcnn_all_dcnm_int8_qat.pth     --kld-metrics runs/kld/<run>/affinity_kld_metrics.json --output-dir runs/edp --voc-data-dir /path/to/dataset
-python recompute_edp_affinity_from_profile.py --old-edp runs/edp/<run>/edp_metrics.json     --kld-metrics runs/kld/<run>/affinity_kld_metrics.json --output-dir runs/affinity
-python build_ranked_scheme_hardware_summary.py     --affinity-ranking runs/affinity/<run>/affinity_ranking.json --output-dir runs/schemes
 ```
 
 Detection accuracies reproduced with this code on the paper's evaluation split
@@ -273,8 +268,8 @@ at evaluation time, so their mAP varies slightly across seeds.
 ### PrivateLoRA (cloud-edge collaborative LLM)
 
 `examples/privatelora/` contains the PrivateLoRA Llama-2-7b model definition (96 PLM
-`lora_mobile` matrices + Head LB), the INT8/CGRA quantization adapter, a bundled
-lm-evaluation-harness fork, and the BoolQ / GSM8K affinity profilers.
+`lora_mobile` matrices + Head LB), the INT8/CGRA quantization adapter, and a bundled
+lm-evaluation-harness fork for BoolQ / GSM8K evaluation.
 
 Setup: download `meta-llama/Llama-2-7b-hf`, download the PrivateLoRA checkpoints from the
 [v1.0.0 release](https://github.com/ZhipingJia/HERA/releases/tag/v1.0.0) (SHA-256 manifests
@@ -299,15 +294,6 @@ Accuracies reproduced with this code (full evaluation sets):
 |---|---|---|
 | BoolQ (3,270 samples) | 0.8862 | 0.8865 |
 | GSM8K (1,319 problems) | 0.2729 | 0.2691 |
-
-Per-PLM affinity profiling (`compute_boolq_affinity.py`, `compute_gsm8k_affinity.py`,
-`build_topk_hera_hardware_summary.py`) implements the single-layer ACIM-substitution KLD
-(BoolQ: {Yes, No} choice-token distribution; GSM8K: teacher-forced answer tokens) and the
-analytical EDP comparison. Note that the ACIM noise simulation for PrivateLoRA samples
-from a measured on-chip noise table that is not distributed; running the KLD profilers
-end-to-end requires supplying `quantization_and_noise/sample_noise_data.py` with your own
-measurements (the scripts raise a clear error otherwise). The EDP profiling, affinity
-synthesis, and scheme summaries run without it.
 
 ## Tests
 

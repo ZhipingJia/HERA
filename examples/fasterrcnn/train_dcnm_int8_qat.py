@@ -44,7 +44,7 @@ from quantization_and_noise.quant_layer import (  # noqa: E402
     linear_quant_noise,
     linear_quant_sample_noise,
 )
-from profile_kld import parse_layer_indices, replace_one_layer_with_acim  # noqa: E402
+from acim_layers import parse_layer_indices, replace_one_layer_with_acim  # noqa: E402
 from trainer import FasterRCNNTrainer  # noqa: E402
 from quantization_and_noise.config_loader import get_config  # noqa: E402
 from utils import array_tool as at  # noqa: E402

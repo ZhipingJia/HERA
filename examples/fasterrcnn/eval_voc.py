@@ -142,7 +142,7 @@ def apply_effective_config(
     import json
     from argparse import Namespace
 
-    from profile_kld import parse_layer_indices, replace_one_layer_with_acim
+    from acim_layers import parse_layer_indices, replace_one_layer_with_acim
 
     with open(effective_config) as f:
         cfg = json.load(f)
