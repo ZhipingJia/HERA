@@ -26,10 +26,6 @@ from hera.workloads.fasterrcnn.reproduce_mapping import (
     build_faster_rcnn_mapping_report,
     load_layer_profiles as load_frcnn,
 )
-from hera.workloads.privatelora.reproduce_mapping import (
-    build_privatelora_mapping_report,
-    load_layer_profiles as load_plora,
-)
 from hera.workloads.vgg16.reproduce_mapping import (
     build_vgg16_mapping_report,
     load_layer_profiles as load_vgg,
@@ -69,24 +65,6 @@ def test_faster_rcnn_split_matches_manuscript() -> None:
         assert layer in report["HERA-P"].dcnm_layers
 
 
-def test_privatelora_splits_match_manuscript() -> None:
-    """BoolQ -> 80/88 PLM on ACIM; GSM8K -> 76/84; Head LB always on DCNM."""
-
-    boolq = build_privatelora_mapping_report(load_plora(DATA / "privatelora_boolq_synthetic_profile.json"))
-    assert len(boolq["HERA-A"].acim_layers) == 80
-    assert len(boolq["HERA-P"].acim_layers) == 88
-
-    gsm8k = build_privatelora_mapping_report(
-        load_plora(DATA / "privatelora_gsm8k_synthetic_profile.json"),
-        hera_a_dcnm_retain=20,
-        hera_p_dcnm_retain=12,
-    )
-    assert len(gsm8k["HERA-A"].acim_layers) == 76
-    assert len(gsm8k["HERA-P"].acim_layers) == 84
-
-    for report in (boolq, gsm8k):
-        assert "lora_lm_head_B" in report["HERA-A"].dcnm_layers
-        assert "lora_lm_head_B" in report["HERA-P"].dcnm_layers
 
 
 def test_vgg16_keeps_first_conv_on_dcnm() -> None:

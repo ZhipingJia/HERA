@@ -28,7 +28,7 @@ hera/
 examples/
   fasterrcnn/      Mapping demo + GPU workload: lightweight Faster R-CNN model,
                    VOC mAP evaluation, DCNM INT8 PTQ/QAT, released detector checkpoints
-  privatelora/     Mapping demo + GPU workload: PrivateLoRA Llama-2-7b modeling,
+  privatelora/     GPU workload: PrivateLoRA Llama-2-7b modeling,
                    BoolQ/GSM8K evaluation (bundled lm-evaluation-harness fork),
                    INT8/CGRA quantization
   vgg16/           Mapping demo for the VGG16 supporting study
@@ -135,33 +135,6 @@ This matches Extended Data Fig. 8: the deeper extractor convolutions and the sha
 `rpn.conv1` are mapped to ACIM in both objectives, the first convolution and the RPN/ROI
 output branches stay on DCNM, and the two ROI-head classifier layers (`head.classifier.0`,
 `head.classifier.2`) are the swing layers — kept on DCNM by HERA-A and moved to ACIM by HERA-P.
-
-**PrivateLoRA**
-
-```bash
-python examples/privatelora/reproduce_mapping.py \
-  --task boolq --profiles-json examples/data/privatelora_boolq_synthetic_profile.json
-python examples/privatelora/reproduce_mapping.py \
-  --task gsm8k --profiles-json examples/data/privatelora_gsm8k_synthetic_profile.json
-```
-
-Expected output (per the layer counts in Fig. 5c; `--list-dcnm` additionally prints the
-retained layer names):
-
-```
-Task: boolq
-HERA-A (80 ACIM / 17 DCNM):
-HERA-P (88 ACIM / 9 DCNM):
-```
-```
-Task: gsm8k
-HERA-A (76 ACIM / 21 DCNM):
-HERA-P (84 ACIM / 13 DCNM):
-```
-
-The DCNM counts include the Head LB layer, which is always retained on DCNM. Thus BoolQ
-HERA-A maps 80 of the 96 PLM matrices to ACIM (16 PLM + Head LB on DCNM) and HERA-P maps 88
-(8 PLM + Head LB on DCNM); GSM8K retains 20 and 12 PLM matrices on DCNM respectively.
 
 **VGG16**
 

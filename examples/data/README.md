@@ -2,8 +2,7 @@
 
 This directory contains small per-layer profile JSON files that drive the CPU
 mapping demos (`examples/*/reproduce_mapping.py`). Each file covers the full
-layer set of its workload (Faster R-CNN: 14 layers; PrivateLoRA: 96 PLM matrices
-+ Head LB; VGG16: 16 layers).
+layer set of its workload (Faster R-CNN: 14 layers; VGG16: 16 layers).
 
 ## What is real and what is illustrative
 
