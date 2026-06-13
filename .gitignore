@@ -22,3 +22,8 @@ dist/
 
 # Released checkpoints are explicitly tracked.
 !examples/fasterrcnn/weights/*.pth
+
+# VGG16 audit network: CIFAR-100 cache and the INT8 baseline (released asset) stay out of git
+/examples/vgg16/cifar_data/
+/examples/vgg16/outputs/
+examples/vgg16/weights/*.pth

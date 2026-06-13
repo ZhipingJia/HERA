@@ -1,0 +1,803 @@
+{
+  "ga_config": {
+    "alpha": 0.8,
+    "population_size": 8,
+    "generations": 12
+  },
+  "affinity": [
+    {
+      "name": "scheme0",
+      "num_acim": 0,
+      "acim_layers": [],
+      "selected_edp_sum": 5.9176650336012804e-08,
+      "selected_edp_normalized": 1.0
+    },
+    {
+      "name": "scheme1",
+      "num_acim": 1,
+      "acim_layers": [
+        "features.27"
+      ],
+      "selected_edp_sum": 4.999191753184641e-08,
+      "selected_edp_normalized": 0.8447912689884561
+    },
+    {
+      "name": "scheme2",
+      "num_acim": 2,
+      "acim_layers": [
+        "features.27",
+        "features.30"
+      ],
+      "selected_edp_sum": 4.080718472768001e-08,
+      "selected_edp_normalized": 0.6895825379769124
+    },
+    {
+      "name": "scheme3",
+      "num_acim": 3,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17"
+      ],
+      "selected_edp_sum": 3.2666972406841606e-08,
+      "selected_edp_normalized": 0.5520246959122261
+    },
+    {
+      "name": "scheme4",
+      "num_acim": 4,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34"
+      ],
+      "selected_edp_sum": 3.183187678129921e-08,
+      "selected_edp_normalized": 0.5379127848662205
+    },
+    {
+      "name": "scheme5",
+      "num_acim": 5,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20"
+      ],
+      "selected_edp_sum": 2.3691664460460795e-08,
+      "selected_edp_normalized": 0.40035494280153416
+    },
+    {
+      "name": "scheme6",
+      "num_acim": 6,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24"
+      ],
+      "selected_edp_sum": 2.1395568845619196e-08,
+      "selected_edp_normalized": 0.36155424012904314
+    },
+    {
+      "name": "scheme7",
+      "num_acim": 7,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10"
+      ],
+      "selected_edp_sum": 1.35196501346128e-08,
+      "selected_edp_normalized": 0.22846257870032263
+    },
+    {
+      "name": "scheme8",
+      "num_acim": 8,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37"
+      ],
+      "selected_edp_sum": 1.2684554509070399e-08,
+      "selected_edp_normalized": 0.21435066765431687
+    },
+    {
+      "name": "scheme9",
+      "num_acim": 9,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40"
+      ],
+      "selected_edp_sum": 1.1849458883527998e-08,
+      "selected_edp_normalized": 0.20023875660831109
+    },
+    {
+      "name": "scheme10",
+      "num_acim": 10,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3"
+      ],
+      "selected_edp_sum": 4.052024180329598e-09,
+      "selected_edp_normalized": 0.06847336166075084
+    },
+    {
+      "name": "scheme11",
+      "num_acim": 11,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3",
+        "features.14"
+      ],
+      "selected_edp_sum": 2.0176912591200007e-09,
+      "selected_edp_normalized": 0.03409607079250489
+    },
+    {
+      "name": "scheme12",
+      "num_acim": 12,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3",
+        "features.14",
+        "features.7"
+      ],
+      "selected_edp_sum": 5.1962500318400006e-11,
+      "selected_edp_normalized": 0.0008780912745711373
+    },
+    {
+      "name": "scheme13",
+      "num_acim": 13,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3",
+        "features.14",
+        "features.7",
+        "classifier.0"
+      ],
+      "selected_edp_sum": 5.051168345600001e-11,
+      "selected_edp_normalized": 0.0008535745630952078
+    },
+    {
+      "name": "scheme14",
+      "num_acim": 14,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3",
+        "features.14",
+        "features.7",
+        "classifier.0",
+        "classifier.3"
+      ],
+      "selected_edp_sum": 4.906086659360001e-11,
+      "selected_edp_normalized": 0.0008290578516192781
+    },
+    {
+      "name": "scheme15",
+      "num_acim": 15,
+      "acim_layers": [
+        "features.27",
+        "features.30",
+        "features.17",
+        "features.34",
+        "features.20",
+        "features.24",
+        "features.10",
+        "features.37",
+        "features.40",
+        "features.3",
+        "features.14",
+        "features.7",
+        "classifier.0",
+        "classifier.3",
+        "classifier.6"
+      ],
+      "selected_edp_sum": 4.9005627993600017e-11,
+      "selected_edp_normalized": 0.0008281243989874319
+    }
+  ],
+  "accdrop": [
+    {
+      "name": "accdrop0",
+      "num_acim": 0,
+      "acim_layers": [],
+      "selected_edp_sum": 5.9176650336012804e-08,
+      "selected_edp_normalized": 1.0
+    },
+    {
+      "name": "accdrop1",
+      "num_acim": 1,
+      "acim_layers": [
+        "classifier.0"
+      ],
+      "selected_edp_sum": 5.9175199519150404e-08,
+      "selected_edp_normalized": 0.999975483288524
+    },
+    {
+      "name": "accdrop2",
+      "num_acim": 2,
+      "acim_layers": [
+        "classifier.0",
+        "features.34"
+      ],
+      "selected_edp_sum": 5.834010389360801e-08,
+      "selected_edp_normalized": 0.9858635722425184
+    },
+    {
+      "name": "accdrop3",
+      "num_acim": 3,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3"
+      ],
+      "selected_edp_sum": 5.833865307674561e-08,
+      "selected_edp_normalized": 0.9858390555310425
+    },
+    {
+      "name": "accdrop4",
+      "num_acim": 4,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27"
+      ],
+      "selected_edp_sum": 4.915392027257921e-08,
+      "selected_edp_normalized": 0.8306303245194986
+    },
+    {
+      "name": "accdrop5",
+      "num_acim": 5,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17"
+      ],
+      "selected_edp_sum": 4.1013707951740806e-08,
+      "selected_edp_normalized": 0.6930724824548125
+    },
+    {
+      "name": "accdrop6",
+      "num_acim": 6,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30"
+      ],
+      "selected_edp_sum": 3.182897514757441e-08,
+      "selected_edp_normalized": 0.5378637514432686
+    },
+    {
+      "name": "accdrop7",
+      "num_acim": 7,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40"
+      ],
+      "selected_edp_sum": 3.0993879522032014e-08,
+      "selected_edp_normalized": 0.523751840397263
+    },
+    {
+      "name": "accdrop8",
+      "num_acim": 8,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24"
+      ],
+      "selected_edp_sum": 2.86977839071904e-08,
+      "selected_edp_normalized": 0.4849511377247716
+    },
+    {
+      "name": "accdrop9",
+      "num_acim": 9,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20"
+      ],
+      "selected_edp_sum": 2.0557571586351997e-08,
+      "selected_edp_normalized": 0.34739329566008553
+    },
+    {
+      "name": "accdrop10",
+      "num_acim": 10,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37"
+      ],
+      "selected_edp_sum": 1.9722475960809598e-08,
+      "selected_edp_normalized": 0.3332813846140798
+    },
+    {
+      "name": "accdrop11",
+      "num_acim": 11,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6"
+      ],
+      "selected_edp_sum": 1.9722420722209597e-08,
+      "selected_edp_normalized": 0.33328045116144794
+    },
+    {
+      "name": "accdrop12",
+      "num_acim": 12,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6",
+        "features.10"
+      ],
+      "selected_edp_sum": 1.1846502011203197e-08,
+      "selected_edp_normalized": 0.20018878973272736
+    },
+    {
+      "name": "accdrop13",
+      "num_acim": 13,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6",
+        "features.10",
+        "features.14"
+      ],
+      "selected_edp_sum": 9.812169089993598e-09,
+      "selected_edp_normalized": 0.16581149886448135
+    },
+    {
+      "name": "accdrop14",
+      "num_acim": 14,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6",
+        "features.10",
+        "features.14",
+        "features.7"
+      ],
+      "selected_edp_sum": 7.846440331192e-09,
+      "selected_edp_normalized": 0.13259351934654764
+    },
+    {
+      "name": "accdrop15",
+      "num_acim": 15,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6",
+        "features.10",
+        "features.14",
+        "features.7",
+        "features.3"
+      ],
+      "selected_edp_sum": 4.9005627993600017e-11,
+      "selected_edp_normalized": 0.0008281243989874319
+    },
+    {
+      "name": "accdrop16",
+      "num_acim": 16,
+      "acim_layers": [
+        "classifier.0",
+        "features.34",
+        "classifier.3",
+        "features.27",
+        "features.17",
+        "features.30",
+        "features.40",
+        "features.24",
+        "features.20",
+        "features.37",
+        "classifier.6",
+        "features.10",
+        "features.14",
+        "features.7",
+        "features.3",
+        "features.0"
+      ],
+      "selected_edp_sum": 4.963497620000001e-11,
+      "selected_edp_normalized": 0.000838759475539188
+    }
+  ],
+  "ga": [
+    {
+      "name": "ga0",
+      "num_acim": 0,
+      "acim_layers": [],
+      "selected_edp_sum": 5.9176650336012804e-08,
+      "selected_edp_normalized": 1.0
+    },
+    {
+      "name": "ga1",
+      "num_acim": 1,
+      "acim_layers": [
+        "features.27"
+      ],
+      "selected_edp_sum": 4.999191753184641e-08,
+      "selected_edp_normalized": 0.8447912689884561
+    },
+    {
+      "name": "ga2",
+      "num_acim": 2,
+      "acim_layers": [
+        "features.27",
+        "features.30"
+      ],
+      "selected_edp_sum": 4.080718472768001e-08,
+      "selected_edp_normalized": 0.6895825379769124
+    },
+    {
+      "name": "ga3",
+      "num_acim": 3,
+      "acim_layers": [
+        "features.20",
+        "features.27",
+        "features.30"
+      ],
+      "selected_edp_sum": 3.2666972406841606e-08,
+      "selected_edp_normalized": 0.5520246959122261
+    },
+    {
+      "name": "ga4",
+      "num_acim": 4,
+      "acim_layers": [
+        "features.3",
+        "features.20",
+        "features.27",
+        "features.30"
+      ],
+      "selected_edp_sum": 2.4869537703643195e-08,
+      "selected_edp_normalized": 0.4202593009646658
+    },
+    {
+      "name": "ga5",
+      "num_acim": 5,
+      "acim_layers": [
+        "features.17",
+        "features.27",
+        "features.30",
+        "features.37",
+        "classifier.6"
+      ],
+      "selected_edp_sum": 3.1831821542699207e-08,
+      "selected_edp_normalized": 0.5379118514135885
+    },
+    {
+      "name": "ga6",
+      "num_acim": 6,
+      "acim_layers": [
+        "features.3",
+        "features.10",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30"
+      ],
+      "selected_edp_sum": 1.4697523377795202e-08,
+      "selected_edp_normalized": 0.24836693686345426
+    },
+    {
+      "name": "ga7",
+      "num_acim": 7,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.20",
+        "features.27",
+        "features.30",
+        "features.40"
+      ],
+      "selected_edp_sum": 1.4192794608292802e-08,
+      "selected_edp_normalized": 0.23983774897200583
+    },
+    {
+      "name": "ga8",
+      "num_acim": 8,
+      "acim_layers": [
+        "features.3",
+        "features.10",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.34"
+      ],
+      "selected_edp_sum": 5.722215431414399e-09,
+      "selected_edp_normalized": 0.0966971837527624
+    },
+    {
+      "name": "ga9",
+      "num_acim": 9,
+      "acim_layers": [
+        "features.3",
+        "features.10",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.37",
+        "features.40"
+      ],
+      "selected_edp_sum": 4.887119805871998e-09,
+      "selected_edp_normalized": 0.08258527270675663
+    },
+    {
+      "name": "ga10",
+      "num_acim": 10,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.27",
+        "features.30",
+        "features.37",
+        "classifier.0"
+      ],
+      "selected_edp_sum": 4.0167985493824e-09,
+      "selected_edp_normalized": 0.06787809932759778
+    },
+    {
+      "name": "ga11",
+      "num_acim": 11,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.37",
+        "classifier.0"
+      ],
+      "selected_edp_sum": 1.7207029345408e-09,
+      "selected_edp_normalized": 0.02907739665510674
+    },
+    {
+      "name": "ga12",
+      "num_acim": 12,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.37",
+        "features.40",
+        "classifier.0"
+      ],
+      "selected_edp_sum": 8.856073089983999e-10,
+      "selected_edp_normalized": 0.014965485609100973
+    },
+    {
+      "name": "ga13",
+      "num_acim": 13,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.34",
+        "features.37",
+        "features.40",
+        "classifier.0"
+      ],
+      "selected_edp_sum": 5.051168345600001e-11,
+      "selected_edp_normalized": 0.0008535745630952078
+    },
+    {
+      "name": "ga14",
+      "num_acim": 14,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.34",
+        "features.37",
+        "features.40",
+        "classifier.0",
+        "classifier.3"
+      ],
+      "selected_edp_sum": 4.906086659360001e-11,
+      "selected_edp_normalized": 0.0008290578516192781
+    },
+    {
+      "name": "ga15",
+      "num_acim": 15,
+      "acim_layers": [
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.34",
+        "features.37",
+        "features.40",
+        "classifier.0",
+        "classifier.3",
+        "classifier.6"
+      ],
+      "selected_edp_sum": 4.9005627993600017e-11,
+      "selected_edp_normalized": 0.0008281243989874319
+    },
+    {
+      "name": "ga16",
+      "num_acim": 16,
+      "acim_layers": [
+        "features.0",
+        "features.3",
+        "features.7",
+        "features.10",
+        "features.14",
+        "features.17",
+        "features.20",
+        "features.24",
+        "features.27",
+        "features.30",
+        "features.34",
+        "features.37",
+        "features.40",
+        "classifier.0",
+        "classifier.3",
+        "classifier.6"
+      ],
+      "selected_edp_sum": 4.963497620000001e-11,
+      "selected_edp_normalized": 0.000838759475539188
+    }
+  ],
+  "note": "Per-scheme accuracy is read from the published results JSON, not recomputed here."
+}

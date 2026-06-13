@@ -1,0 +1,157 @@
+{
+  "epsilon_ratio": 0.1,
+  "num_layers_total": 16,
+  "num_layers_ranked": 15,
+  "affinity_rank": [
+    {
+      "name": "features.27",
+      "short_name": "B4_C2",
+      "kld": 0.21455903351306915,
+      "edp_acim": 3.625416e-13,
+      "edp_dcnm": 9.185095345766401e-09,
+      "edp_diff": 9.184732804166401e-09,
+      "affinity": 2.881358210370497e-08,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.30",
+      "short_name": "B4_C3",
+      "kld": 0.31763985753059387,
+      "edp_acim": 3.625416e-13,
+      "edp_dcnm": 9.185095345766401e-09,
+      "edp_diff": 9.184732804166401e-09,
+      "affinity": 2.1772775655226827e-08,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.17",
+      "short_name": "B3_C2",
+      "kld": 0.5321219563484192,
+      "edp_acim": 1.205972e-12,
+      "edp_dcnm": 8.141418292838402e-09,
+      "edp_diff": 8.140212320838402e-09,
+      "affinity": 1.2792500169525293e-08,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.34",
+      "short_name": "B5_C1",
+      "kld": 0.023685501888394356,
+      "edp_acim": 3.0336799999999995e-14,
+      "edp_dcnm": 8.351259623423999e-10,
+      "edp_diff": 8.350956255423999e-10,
+      "affinity": 6.529771993999004e-09,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.20",
+      "short_name": "B3_C3",
+      "kld": 1.4530142545700073,
+      "edp_acim": 1.205972e-12,
+      "edp_dcnm": 8.141418292838402e-09,
+      "edp_diff": 8.140212320838402e-09,
+      "affinity": 5.227402917504442e-09,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.24",
+      "short_name": "B4_C1",
+      "kld": 0.6117425560951233,
+      "edp_acim": 3.625416e-13,
+      "edp_dcnm": 2.2964581564416e-09,
+      "edp_diff": 2.2960956148416e-09,
+      "affinity": 3.2070724867872436e-09,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.10",
+      "short_name": "B2_C2",
+      "kld": 8.217879295349121,
+      "edp_acim": 4.5803186e-12,
+      "edp_dcnm": 7.880499029606401e-09,
+      "edp_diff": 7.8759187110064e-09,
+      "affinity": 9.463877628869272e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.37",
+      "short_name": "B5_C2",
+      "kld": 0.8858449459075928,
+      "edp_acim": 3.0336799999999995e-14,
+      "edp_dcnm": 8.351259623423999e-10,
+      "edp_diff": 8.350956255423999e-10,
+      "affinity": 8.434884056045433e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.40",
+      "short_name": "B5_C3",
+      "kld": 1.485548496246338,
+      "edp_acim": 3.0336799999999995e-14,
+      "edp_dcnm": 8.351259623423999e-10,
+      "edp_diff": 8.350956255423999e-10,
+      "affinity": 5.252988233452004e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.3",
+      "short_name": "B1_C2",
+      "kld": 16.741849899291992,
+      "edp_acim": 1.7834510599999998e-11,
+      "edp_dcnm": 7.8152692137984e-09,
+      "edp_diff": 7.797434703198401e-09,
+      "affinity": 4.628641402050246e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.14",
+      "short_name": "B3_C1",
+      "kld": 6.706409454345703,
+      "edp_acim": 1.205972e-12,
+      "edp_dcnm": 2.0355388932096e-09,
+      "edp_diff": 2.0343329212096e-09,
+      "affinity": 2.987003512867857e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "features.7",
+      "short_name": "B2_C1",
+      "kld": 10.081734657287598,
+      "edp_acim": 4.5803186e-12,
+      "edp_dcnm": 1.9703090774016e-09,
+      "edp_diff": 1.9657287588016e-09,
+      "affinity": 1.92984528734106e-10,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "classifier.0",
+      "short_name": "FC1",
+      "kld": 0.00739419786259532,
+      "edp_acim": 3.8546e-15,
+      "edp_dcnm": 1.4546714624000001e-12,
+      "edp_diff": 1.4508168624e-12,
+      "affinity": 1.3000247962505203e-11,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "classifier.3",
+      "short_name": "FC2",
+      "kld": 0.012514517642557621,
+      "edp_acim": 3.8546e-15,
+      "edp_dcnm": 1.4546714624000001e-12,
+      "edp_diff": 1.4508168624e-12,
+      "affinity": 1.2429945369595326e-11,
+      "preferred_tier": "ACIM"
+    },
+    {
+      "name": "classifier.6",
+      "short_name": "FC3",
+      "kld": 1.1982544660568237,
+      "edp_acim": 1.0573999999999998e-15,
+      "edp_dcnm": 5.6296000000000004e-14,
+      "edp_diff": 5.5238600000000006e-14,
+      "affinity": 4.241099449658324e-14,
+      "preferred_tier": "ACIM"
+    }
+  ]
+}

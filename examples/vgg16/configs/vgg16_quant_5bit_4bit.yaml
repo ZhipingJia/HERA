@@ -1,0 +1,17 @@
+quan:
+  conv:
+    int_flag: true
+    act:
+      bit: 5
+      quant_name: lsq
+    weight:
+      bit: 4
+      quant_name: lsq
+  fc:
+    int_flag: true
+    act:
+      bit: 5
+      quant_name: lsq
+    weight:
+      bit: 4
+      quant_name: lsq

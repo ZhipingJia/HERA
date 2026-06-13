@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Smoke tests for the HERA reviewer-facing skeleton.
+"""Smoke tests for HERA.
 
-These checks exercise the analytical hardware model, the KLD divergence, and the
-end-to-end affinity-mapping pipeline on the shipped synthetic profiles.  They
-assert that the demo reproduces the qualitative HERA-A / HERA-P splits described
-in the manuscript.  Run with ``python tests/test_smoke.py`` or ``pytest``.
+Exercise the analytical hardware model, the KLD divergence, and the affinity
+framework, and assert that the demos reproduce the manuscript's qualitative
+mapping splits — VGG16 (the audit network, real CIFAR-100 profiles) and the
+Faster R-CNN application. Run with ``python tests/test_smoke.py`` or ``pytest``.
 """
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -18,18 +19,27 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-DATA = REPO_ROOT / "examples" / "data"
+from hera.affinity.core import (  # noqa: E402
+    LayerProfile,
+    build_scheme_family,
+    compute_affinity_records,
+    select_objective_scheme,
+)
+from hera.affinity.profiling import compute_kld_from_logits  # noqa: E402
+from hera.hardware import ACIMParameters, DCNMParameters, LayerShape, compare_acim_dcnm  # noqa: E402
 
-from hera.affinity.profiling import compute_kld_from_logits
-from hera.hardware import ACIMParameters, DCNMParameters, LayerShape, compare_acim_dcnm
-from hera.workloads.fasterrcnn.reproduce_mapping import (
-    build_faster_rcnn_mapping_report,
-    load_layer_profiles as load_frcnn,
-)
-from hera.workloads.vgg16.reproduce_mapping import (
-    build_vgg16_mapping_report,
-    load_layer_profiles as load_vgg,
-)
+FRCNN_DATA = REPO_ROOT / "examples" / "data" / "fasterrcnn_synthetic_profile.json"
+FRCNN_TARGETS = REPO_ROOT / "examples" / "fasterrcnn" / "configs" / "target_layers_v0.json"
+VGG_DATA = REPO_ROOT / "examples" / "vgg16" / "data"
+
+
+def _load_list_profiles(path: Path) -> list[LayerProfile]:
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    return [
+        LayerProfile(name=r["name"], short_name=r.get("short_name", r["name"]),
+                     kld=float(r["kld"]), edp_acim=float(r["edp_acim"]), edp_dcnm=float(r["edp_dcnm"]))
+        for r in rows
+    ]
 
 
 def test_hardware_model_runs() -> None:
@@ -51,28 +61,40 @@ def test_kld_is_zero_for_identical_logits() -> None:
     assert compute_kld_from_logits(reference, perturbed) > 0.0
 
 
+def test_vgg16_audit_network_split() -> None:
+    """VGG16 (real CIFAR-100 profiles): the first conv has negative ACIM EDP
+    benefit and is excluded / kept on DCNM, reproducing Fig. 3c."""
+
+    edp = {r["full_name"]: r for r in json.loads((VGG_DATA / "vgg16_edp_profile_cifar100.json").read_text())["layers"]}
+    kld = json.loads((VGG_DATA / "vgg16_kld_cifar100.json").read_text())["kl_by_layer"]
+    profiles = [
+        LayerProfile(name=n, short_name=edp[n]["short_name"], kld=float(kld[n]),
+                     edp_acim=float(edp[n]["edp_acim"]), edp_dcnm=float(edp[n]["edp_dcnm"]))
+        for n in edp if n in kld
+    ]
+    rank = compute_affinity_records(profiles, require_positive_edp_diff=True)
+    assert "features.0" not in [r.name for r in rank]  # negative ΔEDP, excluded
+    schemes = build_scheme_family(rank, all_layer_names=[p.name for p in profiles])
+    hera_p = select_objective_scheme(schemes, "HERA-P", dcnm_retain=0)
+    assert "features.0" in hera_p.dcnm_layers
+
+
 def test_faster_rcnn_split_matches_manuscript() -> None:
     """HERA-A keeps the two ROI-head FC layers on DCNM; HERA-P moves them to ACIM."""
 
-    report = build_faster_rcnn_mapping_report(load_frcnn(DATA / "fasterrcnn_synthetic_profile.json"))
-    assert len(report["HERA-A"].acim_layers) == 7
-    assert len(report["HERA-P"].acim_layers) == 9
-    assert "head.classifier.0" in report["HERA-A"].dcnm_layers
-    assert "head.classifier.0" in report["HERA-P"].acim_layers
-    # The first conv and RPN/ROI output branches stay on DCNM in both objectives.
+    profiles = _load_list_profiles(FRCNN_DATA)
+    layer_names = [layer["full_name"] for layer in json.loads(FRCNN_TARGETS.read_text())["layers"]]
+    rank = compute_affinity_records(profiles, require_positive_edp_diff=True)
+    schemes = build_scheme_family(rank, all_layer_names=layer_names)
+    hera_a = select_objective_scheme(schemes, "HERA-A", dcnm_retain=2)
+    hera_p = select_objective_scheme(schemes, "HERA-P", dcnm_retain=0)
+    assert len(hera_a.acim_layers) == 7
+    assert len(hera_p.acim_layers) == 9
+    assert "head.classifier.0" in hera_a.dcnm_layers
+    assert "head.classifier.0" in hera_p.acim_layers
     for layer in ("extractor.0.0", "rpn.score", "rpn.loc", "head.score", "head.cls_loc"):
-        assert layer in report["HERA-A"].dcnm_layers
-        assert layer in report["HERA-P"].dcnm_layers
-
-
-
-
-def test_vgg16_keeps_first_conv_on_dcnm() -> None:
-    """The first convolution has negative ACIM EDP benefit and stays on DCNM."""
-
-    report = build_vgg16_mapping_report(load_vgg(DATA / "vgg16_synthetic_profile.json"))
-    assert "features.0" in report["HERA-A"].dcnm_layers
-    assert "features.0" in report["HERA-P"].dcnm_layers
+        assert layer in hera_a.dcnm_layers
+        assert layer in hera_p.dcnm_layers
 
 
 def main() -> int:

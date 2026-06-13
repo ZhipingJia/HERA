@@ -1,0 +1,56 @@
+quan:
+  # 初始化配置 - 用于LSQ量化器的初始化
+  init_batch: true
+  init_batch_num: 5
+
+  # Conv2d 层的量化配置
+  conv:
+    int_flag: false  # 设置为 false,不使用 int_flag 模式
+    act:
+      all_positive: false
+      bit: 8                    # 输入量化为 8-bit
+      per_channel: false
+      quant_name: lsq           # 使用 LSQ (Learned Step Size Quantization)
+      symmetric: true
+      th_point: min
+      th_scale: 0.8
+    act_out:
+      quant_name: null          # 输出不量化
+    weight:
+      all_positive: false
+      bit: 8                    # 权重量化为 8-bit
+      per_channel: false
+      quant_name: lsq
+      symmetric: true
+      th_point: min
+      th_scale: 0.8
+
+  # Linear (全连接) 层的量化配置
+  fc:
+    int_flag: false  # 设置为 false,不使用 int_flag 模式
+    act:
+      all_positive: false
+      bit: 8                    # 输入量化为 8-bit
+      per_channel: false
+      quant_name: lsq
+      symmetric: true
+      th_point: min
+      th_scale: 0.8
+    act_out:
+      quant_name: null          # 输出不量化
+    weight:
+      all_positive: false
+      bit: 8                    # 权重量化为 8-bit
+      per_channel: false
+      quant_name: lsq
+      symmetric: true
+      th_point: min
+      th_scale: 0.8
+
+  # BatchNorm 层配置 (不量化)
+  bn:
+    quant_flag: false
+
+  # AvgPool 层配置 (不量化)
+  avgpool:
+    quant_flag: false

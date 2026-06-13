@@ -1,0 +1,136 @@
+{
+  "dataset": "cifar100",
+  "baseline_accuracy": 73.34,
+  "accuracy_by_layer": {
+    "features.0": 1.0,
+    "features.3": 2.6,
+    "features.7": 11.91,
+    "features.10": 25.74,
+    "features.14": 14.54,
+    "features.17": 71.16,
+    "features.20": 63.41,
+    "features.24": 69.16,
+    "features.27": 72.11,
+    "features.30": 71.07,
+    "features.34": 73.19,
+    "features.37": 62.48,
+    "features.40": 70.4,
+    "classifier.0": 73.26,
+    "classifier.3": 73.18,
+    "classifier.6": 60.77
+  },
+  "layers": [
+    {
+      "layer_name": "features.0",
+      "short_name": "B1_C1",
+      "kl_divergence": 8.813474655151367,
+      "accuracy": 1.0,
+      "accuracy_drop_from_baseline": 72.34
+    },
+    {
+      "layer_name": "features.3",
+      "short_name": "B1_C2",
+      "kl_divergence": 16.741849899291992,
+      "accuracy": 2.6,
+      "accuracy_drop_from_baseline": 70.74000000000001
+    },
+    {
+      "layer_name": "features.7",
+      "short_name": "B2_C1",
+      "kl_divergence": 10.081734657287598,
+      "accuracy": 11.91,
+      "accuracy_drop_from_baseline": 61.43000000000001
+    },
+    {
+      "layer_name": "features.10",
+      "short_name": "B2_C2",
+      "kl_divergence": 8.217879295349121,
+      "accuracy": 25.74,
+      "accuracy_drop_from_baseline": 47.60000000000001
+    },
+    {
+      "layer_name": "features.14",
+      "short_name": "B3_C1",
+      "kl_divergence": 6.706409454345703,
+      "accuracy": 14.54,
+      "accuracy_drop_from_baseline": 58.800000000000004
+    },
+    {
+      "layer_name": "features.17",
+      "short_name": "B3_C2",
+      "kl_divergence": 0.5321219563484192,
+      "accuracy": 71.16,
+      "accuracy_drop_from_baseline": 2.180000000000007
+    },
+    {
+      "layer_name": "features.20",
+      "short_name": "B3_C3",
+      "kl_divergence": 1.4530142545700073,
+      "accuracy": 63.41,
+      "accuracy_drop_from_baseline": 9.930000000000007
+    },
+    {
+      "layer_name": "features.24",
+      "short_name": "B4_C1",
+      "kl_divergence": 0.6117425560951233,
+      "accuracy": 69.16,
+      "accuracy_drop_from_baseline": 4.180000000000007
+    },
+    {
+      "layer_name": "features.27",
+      "short_name": "B4_C2",
+      "kl_divergence": 0.21455903351306915,
+      "accuracy": 72.11,
+      "accuracy_drop_from_baseline": 1.230000000000004
+    },
+    {
+      "layer_name": "features.30",
+      "short_name": "B4_C3",
+      "kl_divergence": 0.31763985753059387,
+      "accuracy": 71.07,
+      "accuracy_drop_from_baseline": 2.2700000000000102
+    },
+    {
+      "layer_name": "features.34",
+      "short_name": "B5_C1",
+      "kl_divergence": 0.023685501888394356,
+      "accuracy": 73.19,
+      "accuracy_drop_from_baseline": 0.15000000000000568
+    },
+    {
+      "layer_name": "features.37",
+      "short_name": "B5_C2",
+      "kl_divergence": 0.8858449459075928,
+      "accuracy": 62.48,
+      "accuracy_drop_from_baseline": 10.860000000000007
+    },
+    {
+      "layer_name": "features.40",
+      "short_name": "B5_C3",
+      "kl_divergence": 1.485548496246338,
+      "accuracy": 70.4,
+      "accuracy_drop_from_baseline": 2.9399999999999977
+    },
+    {
+      "layer_name": "classifier.0",
+      "short_name": "FC1",
+      "kl_divergence": 0.00739419786259532,
+      "accuracy": 73.26,
+      "accuracy_drop_from_baseline": 0.0799999999999983
+    },
+    {
+      "layer_name": "classifier.3",
+      "short_name": "FC2",
+      "kl_divergence": 0.012514517642557621,
+      "accuracy": 73.18,
+      "accuracy_drop_from_baseline": 0.1599999999999966
+    },
+    {
+      "layer_name": "classifier.6",
+      "short_name": "FC3",
+      "kl_divergence": 1.1982544660568237,
+      "accuracy": 60.77,
+      "accuracy_drop_from_baseline": 12.57
+    }
+  ]
+}
