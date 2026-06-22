@@ -12,8 +12,16 @@ The INT8 baseline is the reference model for single-layer ACIM substitution in
 
 https://github.com/ZhipingJia/HERA/releases
 
-After download, place it here as `weights/vgg16_int8_baseline_cifar100.pth` (or pass
-`--int8-checkpoint`). The full-precision weights need no manual download — `eval.py`,
-`profile_edp.py`, and `profile_kld.py` obtain them through `cifar100_vgg16_bn(pretrained=True)`.
+After download, verify the checksum and place it here as
+`weights/vgg16_int8_baseline_cifar100.pth` (or pass `--int8-checkpoint`):
+
+```bash
+sha256sum -c <<'EOF'
+d10956c58886091a900e3c83d177ffda4694eea76c0c5877bd77791881c7c970  vgg16_int8_baseline_cifar100.pth
+EOF
+```
+
+The full-precision weights need no manual download — `eval.py`, `profile_edp.py`, and
+`profile_kld.py` obtain them through `cifar100_vgg16_bn(pretrained=True)`.
 
 CIFAR-100 itself is fetched by torchvision into `--data-root` (default `./cifar_data`).
