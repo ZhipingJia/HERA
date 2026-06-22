@@ -8,7 +8,6 @@ from data import util
 import numpy as np
 from utils.config import opt
 import random
-import json
 import time
 
 def inverse_normalize(img):
@@ -117,18 +116,12 @@ class Slice(object):
             self.stop = 1080
 
 def valid_crop_fun(ori_copy, bbox_copy, y_slice, x_slice):
-    ori_img, bbox = ori_copy.copy(),bbox_copy.copy()
-    ori_img = ori_img[:,y_slice.start:y_slice.stop, x_slice.start:x_slice.stop]
-    #print(ori_img.shape)
-    bbox = util.crop_bbox(bbox, y_slice, x_slice)
-    return ori_img, bbox
+    """Fixed valid-region crop for the 1280x960 thermal images.
 
-
-def fixed_crop_fun(ori_copy, bbox_copy, y_slice, x_slice, slice_info):
+    Keeps ``img[:, 190:960, 120:1080]`` (height 770, width 960), dropping the
+    invalid top band and left/right margins of the UNIRI-TID frames.
+    """
     ori_img, bbox = ori_copy.copy(),bbox_copy.copy()
-    x_slice = Slice(1280)
-    y_slice = Slice(960)
-    x_slice.start, x_slice.stop, y_slice.start, y_slice.stop = slice_info
     ori_img = ori_img[:,y_slice.start:y_slice.stop, x_slice.start:x_slice.stop]
     bbox = util.crop_bbox(bbox, y_slice, x_slice)
     return ori_img, bbox
@@ -156,16 +149,6 @@ class Dataset:
                 if len(bbox)==0:
                     self.remove_list.append(id)
     
-        if self.crop == 'fixed_crop':
-            self.crop_h = opt.crop_h
-            self.crop_w = opt.crop_w
-            f = open(f"{opt.voc_data_dir}/slice_info_w{self.crop_w}_h{self.crop_h}.json","r")
-            self.slice_dict = json.load(f)
-            for idx,id in enumerate(self.db.ids):
-                ori_img, bbox, label, difficult, img_id = self.db.get_example(idx)
-                if (bbox[:,2]-bbox[:,0]).max() >= self.crop_h or (bbox[:,3]-bbox[:,1]).max() >= self.crop_w or img_id not in self.slice_dict:
-                    self.remove_list.append(id)
-
         _ = [self.db.ids.remove(id) for id in self.remove_list]
         print('train', len(self.db.ids))
 
@@ -178,10 +161,6 @@ class Dataset:
             label = label[:len(bbox)]
             difficult = difficult[:len(bbox)]
     
-        if self.crop == 'fixed_crop':
-            ori_img, bbox = fixed_crop_fun(ori_img, bbox, self.y_slice, self.x_slice, self.slice_dict[img_id])
-            label = label[:len(bbox)]
-            difficult = difficult[:len(bbox)]
         #print(ori_img.shape)
         img, bbox, label, scale = self.tsf((ori_img, bbox, label))
         #print('train shape:',img.shape)
@@ -215,18 +194,8 @@ class TestDataset:
                 if len(bbox)==0:
                     self.remove_list.append(id)
     
-        if self.crop == 'fixed_crop':
-            self.crop_h = opt.crop_h
-            self.crop_w = opt.crop_w
-            f = open(f"{opt.voc_data_dir}/slice_info_w{self.crop_w}_h{self.crop_h}.json","r")
-            self.slice_dict = json.load(f)
-            for idx,id in enumerate(self.db.ids):
-                ori_img, bbox, label, difficult, img_id = self.db.get_example(idx)
-                if (bbox[:,2]-bbox[:,0]).max() >= self.crop_h or (bbox[:,3]-bbox[:,1]).max() >= self.crop_w or img_id not in self.slice_dict:
-                    self.remove_list.append(id)
-    
         _ = [self.db.ids.remove(id) for id in self.remove_list]
-        
+
         print('test',len(self.db.ids))
         
     def __getitem__(self, idx):
@@ -240,10 +209,6 @@ class TestDataset:
             label = label[:len(bbox)]
             difficult = difficult[:len(bbox)]
         #time1 = time.time()
-        if self.crop == 'fixed_crop':
-            ori_img, bbox = fixed_crop_fun(ori_img, bbox, self.y_slice, self.x_slice, self.slice_dict[img_id])
-            label = label[:len(bbox)]
-            difficult = difficult[:len(bbox)]
         # print('croped shape:',ori_img.shape)
         # print('bbox:',bbox)
         img = preprocess(ori_img,self.min_size, self.max_size)

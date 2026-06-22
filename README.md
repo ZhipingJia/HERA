@@ -46,8 +46,9 @@ tests/                 Smoke tests (also verify the demo outputs)
 
 This repository does **not** contain:
 
-- the infrared human-detection dataset for Faster R-CNN (VOC-style layout documented below;
-  available from the corresponding authors upon reasonable request);
+- the thermal human-detection dataset for Faster R-CNN — the public **UNIRI-TID** dataset
+  ([IEEE DataPort](https://ieee-dataport.org/open-access/thermal-image-dataset-person-detection-uniri-tid));
+  arrange it in the VOC-style layout documented below;
 - the Llama-2-7b base model (download `meta-llama/Llama-2-7b-hf` from the Hugging Face Hub
   under the Llama 2 license);
 - large checkpoints in the git tree — the PrivateLoRA adapters (~647 MB each) and the VGG16
@@ -188,10 +189,21 @@ EDP comes from the calibrated analytical model in `hera.hardware`; the `AccDrop`
 `examples/fasterrcnn/` contains the paper's lightweight channel-32 detector
 (`FasterRCNNVGG16LIGHTV3`, 14 Conv2d/Linear target layers) with inference, VOC mAP
 evaluation, DCNM INT8 PTQ and QAT. Released checkpoints (~320 KB each) are in
-`examples/fasterrcnn/weights/`. The infrared dataset is not distributed; point
-`--voc-data-dir` at a VOC-style root (`imgs/<id>.jpg`,
-`Anotations/All_In_One_Anot_voc/<id>.xml`, `list_files/test.list`,
-`slice_info_w320_h240.json`).
+`examples/fasterrcnn/weights/`.
+
+The thermal dataset (UNIRI-TID) is not distributed. Point `--voc-data-dir` at a VOC-style
+root containing:
+
+- `imgs/<id>.jpg` — the **1280×960** thermal frames;
+- `Anotations/All_In_One_Anot_voc/<id>.xml` — VOC bounding boxes, single class `human`;
+- `list_files/trainval.list` and `list_files/test.list` — the train/test split (4,999 / 1,275).
+
+Inference applies a fixed `valid_crop` that keeps the valid region
+`img[:, 190:960, 120:1080]` (height 770 × width 960, dropping the invalid top band and
+side margins of the UNIRI-TID frames); the shorter edge is then resized to `min_size` (154)
+and the image is ImageNet-normalized. Detection accuracy is the VOC07 AP of the single
+`human` class. If your frames are not 1280×960, adjust the crop in
+`data/dataset.py` (`Slice.valid_choice`) accordingly.
 
 ```bash
 cd examples/fasterrcnn

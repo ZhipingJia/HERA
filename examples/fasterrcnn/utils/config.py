@@ -29,12 +29,13 @@ def get_count(name, weight_module, logger):
 
 class Config:
     # --- data (must be provided by the user; VOC-style layout, see README) ---
-    voc_data_dir = None          # root containing JPEGImages/, Annotations/, list_files/
+    # Expects 1280x960 thermal frames (UNIRI-TID). `valid_crop` keeps the fixed
+    # valid region img[:, 190:960, 120:1080] (770x960); the shorter edge is then
+    # resized to min_size.
+    voc_data_dir = None          # root: imgs/, Anotations/All_In_One_Anot_voc/, list_files/
     min_size = 154               # image resize lower bound (paper setting)
     max_size = 1000              # image resize upper bound
-    crop = "valid_crop"          # crop mode used by the infrared detection task
-    crop_h = 240
-    crop_w = 320
+    crop = "valid_crop"          # fixed valid-region crop for the 1280x960 frames
 
     num_workers = 4
     test_num_workers = 4

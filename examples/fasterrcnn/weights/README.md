@@ -23,5 +23,6 @@ the original digital INT8-emulation evaluation flow, which is not part of this
 repository; a plain full-precision forward pass does not reproduce it. Its role
 here is as the FP starting point for the DCNM INT8 PTQ/QAT pipeline.
 
-The infrared human-detection dataset is not distributed; see the repository
-README for the expected VOC-style layout to run on your own data.
+The thermal human-detection dataset (UNIRI-TID) is not distributed; see the repository
+README for the expected VOC-style layout (1280×960 frames, single class `human`, fixed
+`valid_crop`) to run on your own data.
