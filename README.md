@@ -54,10 +54,7 @@ This repository does **not** contain:
 - large checkpoints in the git tree — the PrivateLoRA adapters (~647 MB each) and the VGG16
   INT8 baseline (~59 MB) are published as
   [GitHub Release assets](https://github.com/ZhipingJia/HERA/releases); see the per-example
-  `weights/README.md` for download links and SHA-256 manifests;
-- the measured on-chip ACIM noise table used by the noise simulation (proprietary hardware
-  characterization; the code raises a clear error and accepts a user-provided table), and
-  HERA-silicon driver code.
+  `weights/README.md` for download links and SHA-256 manifests.
 
 Full on-chip functionality requires the HERA hardware platform and can be provided by the
 corresponding authors upon reasonable request.
