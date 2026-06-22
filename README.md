@@ -56,9 +56,6 @@ This repository does **not** contain:
   [GitHub Release assets](https://github.com/ZhipingJia/HERA/releases); see the per-example
   `weights/README.md` for download links and SHA-256 manifests.
 
-Full on-chip functionality requires the HERA hardware platform and can be provided by the
-corresponding authors upon reasonable request.
-
 ## System Requirements
 
 **Software dependencies**
